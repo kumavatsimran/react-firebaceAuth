@@ -43,29 +43,50 @@ function AuthForm() {
     }
 
   return (
-    <><div className=" bg-dark  p-5 ">
-    <div className="row justify-content-center">
-      <div className="col-md-6">
-        <div className="card shadow-lg rounded mt-5 bg-black">
-          <div className="card-header text-center  text-white">
-            <h3>{signIn ? "Welcome Back!" : "Join Us Today!"}</h3>
-            <p>{signIn ? "Sign in to continue" : "Create an account to get started"}</p>
+    <>
+    <div
+      className="container-fluid d-flex align-items-center justify-content-center min-vh-100"
+      style={{
+        background: "black",
+      }}
+    >
+      <div className="col-12 col-md-8 col-lg-5">
+        <div className="card shadow-lg border-0 rounded-4">
+          {/* Header */}
+          <div className="card-header bg-dark text-center text-white rounded-top-4">
+            <h3 className="mb-1 ">
+              {signIn ? "Welcome Back!" : "Join Us Today!"}
+            </h3>
+            <p className="mb-0">
+              {signIn
+                ? "Sign in to continue"
+                : "Create an account to get started"}
+            </p>
           </div>
+
+          {/* Card Body */}
           <div className="card-body p-4">
+            {/* Toggle Buttons */}
             <div className="d-flex justify-content-center mb-4">
               <button
                 onClick={() => setSignIn(false)}
-                className={`btn ${!signIn ? "btn-primary" : "btn-outline-primary"} me-2`}
+                className={`btn ${
+                  !signIn ? "btn-primary" : "btn-outline-primary"
+                } me-2`}
               >
                 Sign Up
               </button>
               <button
                 onClick={() => setSignIn(true)}
-                className={`btn ${signIn ? "btn-primary" : "btn-outline-primary"}`}
+                className={`btn ${
+                  signIn ? "btn-primary" : "btn-outline-primary"
+                }`}
               >
                 Sign In
               </button>
             </div>
+
+            {/* Form */}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label fw-bold">
@@ -73,7 +94,7 @@ function AuthForm() {
                 </label>
                 <input
                   type="email"
-                  className="form-control"
+                  className="form-control shadow-sm"
                   id="email"
                   name="email"
                   value={user.email || ""}
@@ -87,7 +108,7 @@ function AuthForm() {
                 </label>
                 <input
                   type="password"
-                  className="form-control"
+                  className="form-control shadow-sm"
                   id="password"
                   name="password"
                   value={user.password || ""}
@@ -95,6 +116,7 @@ function AuthForm() {
                   placeholder="Enter your password"
                 />
               </div>
+              {/* Submit Button */}
               <div className="d-grid">
                 <button type="submit" className="btn btn-primary mb-3">
                   {signIn ? "Sign In" : "Sign Up"}
@@ -109,10 +131,23 @@ function AuthForm() {
               </div>
             </form>
           </div>
+
+          {/* Footer */}
+          <div className="card-footer text-center text-muted small">
+            <p>
+              {signIn ? "Don't have an account?" : "Already a member?"}{" "}
+              <span
+                className="text-primary"
+                style={{ cursor: "pointer" }}
+                onClick={() => setSignIn(!signIn)}
+              >
+                {signIn ? "Sign Up" : "Sign In"}
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   
 </>
   )

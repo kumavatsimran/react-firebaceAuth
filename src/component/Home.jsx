@@ -5,10 +5,13 @@ import {signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
-  const [user,setUser]=useState({})
-  const [data,setData]=useState([])
-  const[editId,setEditId]=useState("")
+
   const nagivate=useNavigate()
+  // 
+  const [user, setUser] = useState({ Name: "", address: "" });
+const [data, setData] = useState([]);
+const [editId, setEditId] = useState("");
+
 
   const handleChange=(e)=>{
    const {name,value}=e.target
@@ -25,22 +28,27 @@ function Home() {
     e.preventDefault();
     try {
       if (editId === "") {
+        // Add a new user
         await addDoc(collection(db, "user"), user);
         console.log("User added successfully");
       } else {
+        // Update existing user
         await updateDoc(doc(db, "user", editId), {
           Name: user.Name,
           address: user.address,
         });
         console.log("User updated successfully");
-        setEditId("");
+        setEditId(""); // Clear editId
       }
-      setUser({});
-      list();
+  
+      // Reset the user state to empty
+      setUser({ Name: "", address: "" });
     } catch (error) {
       console.error("Error:", error);
     }
   };
+  
+  
   const list = () => {
     const unsubscribe = onSnapshot(collection(db, "user"), (snapshot) => {
       const allData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -61,10 +69,12 @@ function Home() {
      console.log(error); 
     }
   }
-  const handleEdit=()=>{
-setUser(user);
-setEditId(user.id)
-  };
+  const handleEdit = (userData) => {
+  setEditId(userData.id); // Set the edit ID
+  setUser({ Name: userData.Name, address: userData.address }); // Set user data in form
+  console.log("Editing User:", userData);
+};
+
   
   const handleSignout=()=>{
 signOut(auth).then(()=>{
@@ -95,28 +105,28 @@ signOut(auth).then(()=>{
                       Name 
                     </label>
                     <input
-                      type="Name"
-                      className="form-control"
-                      id="Name"
-                      name="Name"
-                      value={user.Name || ""}
-                      onChange={handleChange}
-                      placeholder="Enter Name"
-                    />
+  type="text"
+  className="form-control"
+  id="Name"
+  name="Name"
+  value={user.Name || ""}
+  onChange={handleChange}
+  placeholder="Enter Name"
+/>
                   </div>
                   <div className="mb-3">
                     <label htmlFor="address" className="form-label">
                       address
                     </label>
                     <input
-                      type="address"
-                      className="form-control"
-                      id="address"
-                      name="address"
-                      value={user.address || ""}
-                      onChange={handleChange}
-                      placeholder="Enter address"
-                    />
+  type="text"
+  className="form-control"
+  id="address"
+  name="address"
+  value={user.address || ""}
+  onChange={handleChange}
+  placeholder="Enter Address"
+/>
                   </div>
                   <div className="d-grid">
                     <button type="submit" className="btn btn-primary">
@@ -165,6 +175,7 @@ signOut(auth).then(()=>{
 >
   Edit
 </button>
+
 
                       </td>
                     </tr>
